@@ -4,11 +4,20 @@ import com.meltingsource.playwithme.api.game.GameAction
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface CardsAction : GameAction {
+sealed class CardsAction : GameAction {
 
     @Serializable
-    data object EndTurn : CardsAction
+    data class Play(val cardId: String) : CardsAction()
 
     @Serializable
-    data class AddPoint(val playerId: String) : CardsAction
+    object Draw : CardsAction()
+
+    @Serializable
+    object CollectToDiscard : CardsAction()
+
+    @Serializable
+    object CollectToTrick : CardsAction()
+
+    @Serializable
+    object Undo : CardsAction()
 }

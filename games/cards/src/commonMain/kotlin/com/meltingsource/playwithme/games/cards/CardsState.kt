@@ -5,6 +5,16 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CardsState(
-    val currentTurnPlayerId: String,
-    val scores: Map<String, Int>
+    val players: List<PlayerCards>,
+    val table: List<Card>,
+    val deck: List<Card>,
+    val discard: List<Card>,
+    val history: List<CardsState> = emptyList()
 ) : GameState
+
+@Serializable
+data class PlayerCards(
+    val playerId: String,
+    val hand: List<Card>,
+    val tricks: List<Card>
+)
