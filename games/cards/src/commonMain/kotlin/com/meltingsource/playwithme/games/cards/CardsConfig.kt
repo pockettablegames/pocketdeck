@@ -6,5 +6,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CardsConfig(
     val name: String,
-    val cardsPerPlayer: Int
+    val deck: List<Card>,
+    val cardsPerPlayer: Int,
+    val showDeckZone: Boolean,
+    val showDiscardZone: Boolean,
+    val showPlayerTrickZone: Boolean,
+    val stackCardsOnTable: Boolean,
+    val refillDeckWithDiscard: Boolean,
+    val groupByRank: Boolean
 ) : GameConfig

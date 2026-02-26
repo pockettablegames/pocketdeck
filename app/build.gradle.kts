@@ -11,7 +11,7 @@ kotlin {
     }
 
     sourceSets {
-        jsMain.dependencies {
+        commonMain.dependencies {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
@@ -24,6 +24,9 @@ kotlin {
             implementation(projects.core)
             implementation(projects.transport)
             implementation(projects.games.cards)
+        }
+
+        jsMain.dependencies {
         }
     }
 }

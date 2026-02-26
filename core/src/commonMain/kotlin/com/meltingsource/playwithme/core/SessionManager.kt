@@ -34,7 +34,8 @@ class SessionManager(
             if (it.phase == SessionPhase.LOBBY) {
                 val player = Player(
                     id = Uuid.random().toString(),
-                    name = name
+                    name = name,
+                    avatar = it.players.size
                 )
 
                 val players = it.players + player

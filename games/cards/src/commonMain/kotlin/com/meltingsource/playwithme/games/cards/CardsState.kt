@@ -6,7 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CardsState(
     val players: List<PlayerCards>,
-    val table: List<Card>,
     val deck: List<Card>,
     val discard: List<Card>,
     val history: List<CardsState> = emptyList()
@@ -16,5 +15,6 @@ data class CardsState(
 data class PlayerCards(
     val playerId: String,
     val hand: List<Card>,
-    val tricks: List<Card>
+    val tricks: List<List<Card>>,
+    val table: List<Card>
 )

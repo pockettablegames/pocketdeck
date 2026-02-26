@@ -16,7 +16,7 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
         players: List<Player>,
         config: CardsConfig
     ): CardsState {
-        val deck = buildDeck().toMutableList()
+        val deck = config.deck.toMutableList()
 
         val playerCards = players.map { player ->
             PlayerCards(
@@ -24,13 +24,13 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
                 hand = deck.take(config.cardsPerPlayer).also {
                     deck.removeAll(it)
                 },
+                table = emptyList(),
                 tricks = emptyList()
             )
         }
 
         return CardsState(
             players = playerCards,
-            table = emptyList(),
             deck = deck,
             discard = emptyList()
         )
@@ -59,7 +59,8 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
         val card = player.hand.first { it.id == cardId }
 
         val updatedPlayer = player.copy(
-            hand = player.hand.filterNot { it.id == cardId }
+            hand = player.hand.filterNot { it.id == cardId },
+            table = player.table + card
         )
 
         val updatedPlayers = state.players.map {
@@ -67,8 +68,7 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
         }
 
         val newState = state.copy(
-            players = updatedPlayers,
-            table = state.table + card
+            players = updatedPlayers
         )
 
         return withHistory(state, newState)
@@ -103,9 +103,13 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
     private fun collectToDiscard(
         state: CardsState
     ): CardsState {
+        val table = state.players.flatMap { it.table }
+        val updatedPlayers = state.players.map {
+            it.copy(table = emptyList())
+        }
         val newState = state.copy(
-            discard = state.discard + state.table,
-            table = emptyList()
+            players = updatedPlayers,
+            discard = state.discard + table
         )
 
         return withHistory(state, newState)
@@ -115,20 +119,23 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
         state: CardsState,
         actor: Player
     ): CardsState {
+        val table = state.players.flatMap { it.table }
 
-        val player = state.players.first { it.playerId == actor.id }
-
-        val updatedPlayer = player.copy(
-            tricks = player.tricks + state.table
-        )
-
-        val updatedPlayers = state.players.map {
-            if (it.playerId == actor.id) updatedPlayer else it
+        val updatedPlayers = state.players.map { playerCards ->
+            if (playerCards.playerId == actor.id) {
+                playerCards.copy(
+                    tricks = playerCards.tricks.toMutableList().also {
+                        it.add(table)
+                    },
+                    table = emptyList()
+                )
+            } else {
+                playerCards.copy(table = emptyList())
+            }
         }
 
         val newState = state.copy(
-            players = updatedPlayers,
-            table = emptyList()
+            players = updatedPlayers
         )
 
         return withHistory(state, newState)
@@ -141,15 +148,5 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
         return current.copy(
             history = previous.history + previous
         )
-    }
-
-    private fun buildDeck(): List<Card> {
-        return (1..20).map {
-            Card(
-                id = it.toString(),
-                rank = it.toString(),
-                suit = "♠"
-            )
-        }
     }
 }
