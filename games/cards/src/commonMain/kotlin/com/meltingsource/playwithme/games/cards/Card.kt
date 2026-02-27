@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class Card(
     val id: String,
     val rank: String,
-    val suit: String
+    val suit: Suit
 )

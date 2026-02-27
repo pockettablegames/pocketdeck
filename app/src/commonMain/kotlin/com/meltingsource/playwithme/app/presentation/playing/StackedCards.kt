@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.zIndex
@@ -16,16 +17,17 @@ import com.meltingsource.playwithme.app.theme.Theme
 fun <T> StackedCards(
     items: List<T>,
     modifier: Modifier = Modifier,
+    cardWidth: Dp = Theme.Card.width,
     cardContent: @Composable (T) -> Unit
 ) {
     BoxWithConstraints (
         modifier = modifier
     ) {
         val offset = remember(items) {
-            min(Theme.Card.width / 2, (this.maxWidth - Theme.Card.width) / (items.size - 1).toFloat())
+            min(cardWidth / 2, (this.maxWidth - cardWidth) / (items.size - 1).toFloat())
         }
         val initialOffset = remember(items, offset) {
-            (this.maxWidth - (Theme.Card.width + offset * (items.size - 1))) / 2f
+            (this.maxWidth - (cardWidth + offset * (items.size - 1))) / 2f
         }
 
         items.forEachIndexed { index, item ->

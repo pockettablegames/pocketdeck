@@ -1,18 +1,24 @@
 package com.meltingsource.playwithme.app.presentation.playing
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.meltingsource.playwithme.app.theme.Theme
 import com.meltingsource.playwithme.games.cards.Card
+import com.meltingsource.playwithme.games.cards.Suit
 import org.jetbrains.compose.resources.painterResource
 import playwithme.app.generated.resources.Res
-import playwithme.app.generated.resources.hearts_king
+import playwithme.app.generated.resources.clubs
+import playwithme.app.generated.resources.diamonds
+import playwithme.app.generated.resources.hearts
+import playwithme.app.generated.resources.spades
 
 @Composable
 fun PlayingCard(
@@ -33,15 +39,28 @@ fun PlayingCard(
         shape = Theme.Card.shape,
         color = Theme.Card.color
     ) {
-        Box(
-            modifier = Modifier.padding(4.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Image(
-                painter = painterResource(Res.drawable.hearts_king),
-                contentDescription = null,
-                modifier = Modifier.size(48.dp)
-            )
+        Column {
+            Column(
+                modifier = Modifier.padding(4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                when (card.suit) {
+                    Suit.DIAMONDS, Suit.HEARTS -> Text(card.rank, color = Color.Red)
+                    else -> Text(card.rank, color = Color.Black)
+                }
+                Image(
+                    painter = painterResource(
+                        when (card.suit) {
+                            Suit.DIAMONDS -> Res.drawable.diamonds
+                            Suit.CLUBS -> Res.drawable.spades
+                            Suit.HEARTS -> Res.drawable.hearts
+                            Suit.SPADES -> Res.drawable.spades
+                        }
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp)
+                )
+            }
         }
     }
 }

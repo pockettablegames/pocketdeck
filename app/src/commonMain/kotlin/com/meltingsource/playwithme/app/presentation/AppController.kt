@@ -8,6 +8,7 @@ import com.meltingsource.playwithme.core.SessionManager
 import com.meltingsource.playwithme.games.cards.Card
 import com.meltingsource.playwithme.games.cards.CardsConfig
 import com.meltingsource.playwithme.games.cards.CardsGame
+import com.meltingsource.playwithme.games.cards.Suit
 import kotlinx.coroutines.flow.StateFlow
 
 class AppController {
@@ -72,7 +73,7 @@ class AppController {
     private fun bootstrap() {
 
         sessionManager.addPlayer("Alice")
-        sessionManager.addPlayer("Gabriel")
+        //sessionManager.addPlayer("Gabriel")
         sessionManager.addPlayer("Vera")
 //        sessionManager.addPlayer("Nuno")
 //        sessionManager.addPlayer("Rita")
@@ -83,13 +84,31 @@ class AppController {
         sessionManager.selectConfig(
             CardsConfig(
                 name = "Default",
-                deck = (1..20).map {
-                    Card(
-                        id = it.toString(),
-                        rank = it.toString(),
-                        suit = "♠"
+                deck = Suit.entries.flatMap { suit ->
+                    (2..10).map {
+                        Card(
+                            id = it.toString(),
+                            rank = it.toString(),
+                            suit = suit
+                        )
+                    } + Card(
+                        id = "A",
+                        rank = "A",
+                        suit = suit
+                    ) + Card(
+                        id = "K",
+                        rank = "K",
+                        suit = suit
+                    ) + Card(
+                        id = "Q",
+                        rank = "Q",
+                        suit = suit
+                    ) + Card(
+                        id = "J",
+                        rank = "J",
+                        suit = suit
                     )
-                },
+                }.shuffled(),
                 cardsPerPlayer = 3,
                 showDeckZone = true,
                 showDiscardZone = true,

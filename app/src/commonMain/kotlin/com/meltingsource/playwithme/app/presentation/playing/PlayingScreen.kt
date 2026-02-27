@@ -59,13 +59,10 @@ fun PlayingScreen(
                         players = otherPlayers,
                         activePlayer = activePlayer,
                         table = uiState.table,
-                        modifier = Modifier.fillMaxWidth(),
-                        maxWidth = maxWith
-                    )
-
-                    DeckDiscardRow(
-                        deckCount = uiState.deckCount,
                         discard = uiState.discard,
+                        modifier = Modifier.fillMaxWidth(),
+                        maxWidth = maxWith,
+                        deckCount = uiState.deckCount,
                         onDraw = { onAction(CardsAction.Draw) },
                         onCollectDiscard = {
                             onAction(CardsAction.CollectToDiscard)
@@ -74,7 +71,7 @@ fun PlayingScreen(
 
                     activePlayer?.let {
                         PersonalSection(
-                            playerName = it.name,
+                            player = it,
                             hand = uiState.hand,
                             tricks = uiState.tricks,
                             onPlay = { cardId ->

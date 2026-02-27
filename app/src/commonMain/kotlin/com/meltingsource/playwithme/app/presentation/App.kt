@@ -13,6 +13,7 @@ import com.meltingsource.playwithme.api.session.SessionPhase
 import com.meltingsource.playwithme.app.presentation.lobby.LobbyScreen
 import com.meltingsource.playwithme.app.presentation.playing.PlayingScreen
 import com.meltingsource.playwithme.app.presentation.playing.PlayingUiMapper
+import com.meltingsource.playwithme.app.theme.AppTheme
 
 @Composable
 fun App() {
@@ -23,8 +24,7 @@ fun App() {
 
     val playingUiState = PlayingUiMapper.map(sessionState)
 
-    MaterialTheme {
-
+    AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
