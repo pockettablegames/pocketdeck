@@ -30,7 +30,7 @@ fun DiscardView(
     }
 
     Box(
-        modifier = modifier.padding(8.dp)
+        modifier = modifier.padding(12.dp)
     ) {
         visibleCards.forEachIndexed { index, card ->
             PlayingCard(

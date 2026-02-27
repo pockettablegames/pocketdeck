@@ -18,7 +18,7 @@ fun DeckView(
     val visibleLayers = min(count, 4)
 
     Box(
-        modifier = modifier.padding(8.dp)
+        modifier = modifier.padding(12.dp)
     ) {
 
         repeat(visibleLayers) { index ->

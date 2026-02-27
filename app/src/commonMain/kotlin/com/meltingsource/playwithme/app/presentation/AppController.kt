@@ -87,24 +87,24 @@ class AppController {
                 deck = Suit.entries.flatMap { suit ->
                     (2..10).map {
                         Card(
-                            id = it.toString(),
+                            id = "${suit}_$it",
                             rank = it.toString(),
                             suit = suit
                         )
                     } + Card(
-                        id = "A",
+                        id = "${suit}_A",
                         rank = "A",
                         suit = suit
                     ) + Card(
-                        id = "K",
+                        id = "${suit}_K",
                         rank = "K",
                         suit = suit
                     ) + Card(
-                        id = "Q",
+                        id = "${suit}_Q",
                         rank = "Q",
                         suit = suit
                     ) + Card(
-                        id = "J",
+                        id = "${suit}_J",
                         rank = "J",
                         suit = suit
                     )
