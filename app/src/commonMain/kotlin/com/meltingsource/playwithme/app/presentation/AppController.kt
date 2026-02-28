@@ -115,7 +115,11 @@ class AppController {
                 showPlayerTrickZone = true,
                 stackCardsOnTable = false,
                 refillDeckWithDiscard = false,
-                groupByRank = false
+                groupByRank = false,
+                remainingCardsAfterDealGoesToDeck = true,
+                discardHidesCardsFace = false,
+                revealLastDeckCard = false,
+                autoDeal = true,
             )
         )
 

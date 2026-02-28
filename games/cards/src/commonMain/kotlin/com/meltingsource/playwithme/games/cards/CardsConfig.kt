@@ -13,5 +13,10 @@ data class CardsConfig(
     val showPlayerTrickZone: Boolean,
     val stackCardsOnTable: Boolean,
     val refillDeckWithDiscard: Boolean,
-    val groupByRank: Boolean
+    val groupByRank: Boolean,
+    val remainingCardsAfterDealGoesToDeck: Boolean,
+    val discardHidesCardsFace: Boolean,
+    val revealLastDeckCard: Boolean,
+    val autoDeal: Boolean
+
 ) : GameConfig

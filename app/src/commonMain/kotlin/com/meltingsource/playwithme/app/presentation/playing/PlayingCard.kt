@@ -52,7 +52,7 @@ fun PlayingCard(
                     painter = painterResource(
                         when (card.suit) {
                             Suit.DIAMONDS -> Res.drawable.diamonds
-                            Suit.CLUBS -> Res.drawable.spades
+                            Suit.CLUBS -> Res.drawable.clubs
                             Suit.HEARTS -> Res.drawable.hearts
                             Suit.SPADES -> Res.drawable.spades
                         }
