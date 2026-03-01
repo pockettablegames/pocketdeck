@@ -36,15 +36,14 @@ fun PersonalSection(
     onPlay: (String) -> Unit,
     onCollectTrick: () -> Unit,
     modifier: Modifier = Modifier,
-    maxWidth: Dp
 ) {
     val avatars = rememberAvatars()
 
     Column (
-        modifier = modifier.padding(Theme.Spacing.medium)
+        modifier = modifier
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = Theme.Spacing.medium),
+            modifier = Modifier.fillMaxWidth().padding(start = Theme.Spacing.medium),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -82,13 +81,15 @@ fun PersonalSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(Theme.Card.height + 16.dp * 2),
-                shape = MaterialTheme.shapes.medium,
                 color = Theme.LightColorScheme.primaryContainer
             ) {
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(Theme.Spacing.small),
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(vertical = 16.dp)
                 ) {
+                    item {
+                        Spacer(Modifier.width(16.dp - Theme.Spacing.small))
+                    }
                     items(
                         items = hand,
                         key = { it.id }
@@ -103,6 +104,9 @@ fun PersonalSection(
                                 .animateItem(),
                             onClick = { onPlay(card.id) }
                         )
+                    }
+                    item {
+                        Spacer(Modifier.width(16.dp))
                     }
                 }
             }

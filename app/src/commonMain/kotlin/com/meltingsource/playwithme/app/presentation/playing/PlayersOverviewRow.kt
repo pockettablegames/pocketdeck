@@ -1,25 +1,33 @@
 package com.meltingsource.playwithme.app.presentation.playing
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Badge
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
-import androidx.compose.ui.unit.times
-import androidx.compose.ui.zIndex
 import com.meltingsource.playwithme.app.theme.Theme
 import com.meltingsource.playwithme.app.theme.rememberAvatars
+import com.meltingsource.playwithme.games.cards.CardsConfig
 import org.jetbrains.compose.resources.painterResource
 import kotlin.uuid.ExperimentalUuidApi
 
@@ -27,25 +35,55 @@ import kotlin.uuid.ExperimentalUuidApi
 @Composable
 fun PlayersOverviewRow(
     players: List<PlayerSummaryUi>,
-    maxWidth: Dp
+    activePlayer: PlayerSummaryUi?,
+    maxWidth: Dp,
+    config: CardsConfig
 ) {
     val avatars = rememberAvatars()
 
+    val othersCount = remember(players) {
+        players.size - 1
+    }
+
     val slot = remember(players, maxWidth) {
-        (maxWidth - Theme.Spacing.medium * (players.size + 3)) / players.size.toFloat()
+        (maxWidth - (Theme.Spacing.medium * 2 + Theme.Spacing.medium * (othersCount - 1))) / othersCount.toFloat()
     }
 
     val stackWidth = remember(slot) {
-        min(slot,maxWidth * 0.5f)
+        min(slot, maxWidth * 0.5f)
     }
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 2 * Theme.Spacing.medium, vertical = Theme.Spacing.medium),
+            .padding(horizontal = Theme.Spacing.medium)
+            .padding(top = Theme.Spacing.medium, bottom = Theme.Spacing.large),
         horizontalArrangement = Arrangement.spacedBy(Theme.Spacing.medium),
     ) {
-        players.forEach { player ->
+        val startIndex = remember(players, activePlayer) {
+            (players.indexOf(activePlayer).let {
+                if (it < 0) {
+                    0
+                } else {
+                    it
+                }
+            } + if (config.playersOrderClockwise) {
+                1
+            } else {
+                -1
+            }) % players.size
+        }
+
+        for (index in 0..<othersCount) {
+            val player = players[
+                (startIndex + if (config.playersOrderClockwise) {
+                index
+            } else {
+                -index
+            } + players.size
+                    ) % players.size
+            ]
+
             Box(
                 Modifier
                     .width(slot),
@@ -65,10 +103,10 @@ fun PlayersOverviewRow(
                             Image(
                                 painter = painterResource(avatars[player.avatar]),
                                 contentDescription = null,
-                                modifier = Modifier.size(48.dp)
+                                modifier = Modifier.size(52.dp)
                             )
                         }
-                        if(player.trickCount > 0) {
+                        if (player.trickCount > 0) {
                             Badge(
                                 modifier = Modifier
                                     .align(Alignment.TopEnd)

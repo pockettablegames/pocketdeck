@@ -17,6 +17,7 @@ data class CardsConfig(
     val remainingCardsAfterDealGoesToDeck: Boolean,
     val discardHidesCardsFace: Boolean,
     val revealLastDeckCard: Boolean,
-    val autoDeal: Boolean
+    val autoDeal: Boolean,
+    val playersOrderClockwise: Boolean
 
 ) : GameConfig

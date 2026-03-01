@@ -1,5 +1,6 @@
 package com.meltingsource.playwithme.app.presentation.playing
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -29,6 +30,7 @@ fun CardBack(
         shape = Theme.Card.shape,
         shadowElevation = Theme.Card.elevation,
         color = Theme.LightColorScheme.surfaceVariant,
+        border = BorderStroke(0.5.dp, Color.LightGray),
     ) {
         Image(
             painter = painterResource(Res.drawable.back),

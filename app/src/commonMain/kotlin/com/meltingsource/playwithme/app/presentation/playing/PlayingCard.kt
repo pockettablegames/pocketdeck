@@ -1,5 +1,6 @@
 package com.meltingsource.playwithme.app.presentation.playing
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,7 +38,8 @@ fun PlayingCard(
             ),
         shadowElevation = Theme.Card.elevation,
         shape = Theme.Card.shape,
-        color = Theme.Card.color
+        color = Theme.Card.color,
+        border = BorderStroke(0.5.dp, Color.LightGray),
     ) {
         Column {
             Column(

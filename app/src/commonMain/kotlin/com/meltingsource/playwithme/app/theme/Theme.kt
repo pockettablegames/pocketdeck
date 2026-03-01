@@ -30,8 +30,8 @@ object Theme {
     object Spacing {
         val small: Dp = 4.dp
         val medium: Dp = 8.dp
-        val large: Dp = 16.dp
-        val xlarge: Dp = 24.dp
+        val large: Dp = 24.dp
+        val xlarge: Dp = 48.dp
     }
 
     object Card {
@@ -40,10 +40,6 @@ object Theme {
         val elevation: Dp = 1.dp
         val shape: Shape = RoundedCornerShape(8.0.dp)
         val color: Color = Color.White
-    }
-
-    object Table {
-        val shape: Shape = RoundedCornerShape(16.0.dp)
     }
 
     val LightColorScheme = lightColorScheme(

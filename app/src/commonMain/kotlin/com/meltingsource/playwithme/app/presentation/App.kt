@@ -14,6 +14,7 @@ import com.meltingsource.playwithme.app.presentation.lobby.LobbyScreen
 import com.meltingsource.playwithme.app.presentation.playing.PlayingScreen
 import com.meltingsource.playwithme.app.presentation.playing.PlayingUiMapper
 import com.meltingsource.playwithme.app.theme.AppTheme
+import com.meltingsource.playwithme.games.cards.CardsConfig
 
 @Composable
 fun App() {
@@ -48,6 +49,7 @@ fun App() {
                     if (playingUiState != null) {
                         PlayingScreen(
                             uiState = playingUiState,
+                            config = sessionState.selectedConfig as CardsConfig,
                             onAction = { controller.apply(it) },
                             onSwitchPlayer = {
                                 controller.switchPlayer()

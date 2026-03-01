@@ -73,11 +73,11 @@ class AppController {
     private fun bootstrap() {
 
         sessionManager.addPlayer("Alice")
-        //sessionManager.addPlayer("Gabriel")
+        sessionManager.addPlayer("Gabriel")
         sessionManager.addPlayer("Vera")
-//        sessionManager.addPlayer("Nuno")
-//        sessionManager.addPlayer("Rita")
-//        sessionManager.addPlayer("Ricardo")
+        sessionManager.addPlayer("Nuno")
+        sessionManager.addPlayer("Rita")
+        sessionManager.addPlayer("Ricardo")
 
         sessionManager.enterSetup("cards")
 
@@ -120,6 +120,7 @@ class AppController {
                 discardHidesCardsFace = false,
                 revealLastDeckCard = false,
                 autoDeal = true,
+                playersOrderClockwise = false
             )
         )
 

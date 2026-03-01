@@ -22,8 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
+import androidx.compose.ui.zIndex
 import com.meltingsource.playwithme.app.theme.Theme
 import com.meltingsource.playwithme.games.cards.Card
+import com.meltingsource.playwithme.games.cards.CardsConfig
 import kotlin.uuid.ExperimentalUuidApi
 
 @OptIn(ExperimentalUuidApi::class)
@@ -36,11 +38,16 @@ fun TableSection(
     modifier: Modifier = Modifier,
     maxWidth: Dp,
     deckCount: Int,
+    config: CardsConfig,
     onDraw: () -> Unit,
     onCollectDiscard: () -> Unit
 ) {
+    val othersCount = remember(players) {
+        players.size - 1
+    }
+
     val slot = remember(players, maxWidth) {
-        (maxWidth - Theme.Spacing.medium * (players.size + 3)) / players.size.toFloat()
+        (maxWidth - (Theme.Spacing.medium * 2 + Theme.Spacing.medium * (othersCount - 1))) / othersCount.toFloat()
     }
 
     val stackWidth = remember(slot) {
@@ -48,22 +55,49 @@ fun TableSection(
     }
 
     Surface(
-        modifier = modifier.padding(Theme.Spacing.medium),
+        modifier = modifier,
         color = Theme.LightColorScheme.primaryContainer,
-        shape = Theme.Table.shape
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(Theme.Spacing.medium),
+            modifier = Modifier.fillMaxWidth().padding(vertical = Theme.Spacing.medium),
             verticalArrangement = Arrangement.spacedBy(Theme.Spacing.xlarge)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Theme.Spacing.medium),
                 horizontalArrangement = Arrangement.spacedBy(Theme.Spacing.medium)
             ) {
-                players.forEach { player ->
+                val startIndex = remember(players, activePlayer) {
+                    (players.indexOf(activePlayer).let {
+                        if (it < 0) {
+                            0
+                        } else {
+                            it
+                        }
+                    } + if (config.playersOrderClockwise) {
+                        1
+                    } else {
+                        -1
+                    }) % players.size
+                }
+
+                for (index in 0..<othersCount) {
+                    val player = players[
+                        (startIndex + if (config.playersOrderClockwise) {
+                            index
+                        } else {
+                            -index
+                        } + players.size
+                                ) % players.size
+                    ]
+
                     Box(
                         Modifier
-                            .width(slot),
+                            .width(slot)
+                            .zIndex(if(index % 2 == 1) {
+                                index + othersCount.toFloat()
+                            } else {
+                                index.toFloat()
+                            }),
                         contentAlignment = Alignment.Center
                     ) {
 
@@ -77,6 +111,14 @@ fun TableSection(
                                 Modifier
                                     .width(stackWidth)
                                     .height(Theme.Card.height)
+                                    .offset(0.dp, if(index % 2 == 1) {
+                                        Theme.Card.height * 0.6f
+                                    } else {
+                                        0.dp
+                                    }),
+                                expand = true,
+                                first = index == 0,
+                                last = index == (othersCount - 1)
                             ) {
                                 PlayingCard(
                                     card = it,
@@ -113,7 +155,8 @@ fun TableSection(
                             cards,
                             Modifier
                                 .width(stackWidth)
-                                .height(Theme.Card.height)
+                                .height(Theme.Card.height),
+                            expand = true
                         ) {
                             PlayingCard(
                                 card = it,
