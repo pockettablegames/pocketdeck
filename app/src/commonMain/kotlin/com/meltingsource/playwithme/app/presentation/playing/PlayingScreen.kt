@@ -25,13 +25,15 @@ fun PlayingScreen(
     uiState: PlayingUiState,
     config: CardsConfig,
     onAction: (GameAction) -> Unit,
-    onSwitchPlayer: () -> Unit
+    onSwitchPlayer: () -> Unit,
+    onEnterScore: () -> Unit
 ) {
     Scaffold(
         topBar = {
             GameTopBar(
                 onUndo = { onAction(CardsAction.Undo) },
-                onSwitch = onSwitchPlayer
+                onSwitch = onSwitchPlayer,
+                onEndGame = onEnterScore
             )
         }
     ) { padding ->

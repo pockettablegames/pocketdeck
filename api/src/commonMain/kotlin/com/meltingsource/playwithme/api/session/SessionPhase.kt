@@ -4,5 +4,6 @@ enum class SessionPhase {
     LOBBY,
     SETUP,
     PLAYING,
+    SCORE,
     RESULTS
 }

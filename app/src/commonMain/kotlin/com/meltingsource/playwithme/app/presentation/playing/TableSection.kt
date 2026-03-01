@@ -90,7 +90,7 @@ fun TableSection(
                         Modifier
                             .width(slot)
                             .zIndex(
-                                if (index % 2 == 1) {
+                                if (othersCount > 2 && index % 2 == 1) {
                                     index + othersCount.toFloat()
                                 } else {
                                     index.toFloat()
@@ -110,7 +110,7 @@ fun TableSection(
                                     .width(stackWidth)
                                     .height(Theme.Card.height)
                                     .offset(
-                                        0.dp, if (index % 2 == 1) {
+                                        0.dp, if (othersCount > 2 && index % 2 == 1) {
                                             Theme.Card.height * 0.6f
                                         } else {
                                             0.dp

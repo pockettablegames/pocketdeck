@@ -50,6 +50,21 @@ class SessionManager(
         }
     }
 
+    fun removePlayer(id: String) {
+        _state.update { lastState ->
+            if (lastState.phase == SessionPhase.LOBBY) {
+                val players = lastState.players.filter { it.id != id }
+
+                lastState.copy(
+                    players = players,
+                    activePlayerId = players.firstOrNull()?.id
+                )
+            } else {
+                lastState
+            }
+        }
+    }
+
     // ------------------------
     // Setup
     // ------------------------
@@ -136,6 +151,32 @@ class SessionManager(
         }
     }
 
+    fun enterScore() {
+        _state.update {
+            it.copy(
+                phase = SessionPhase.SCORE
+            )
+        }
+    }
+
+    fun updateScore(playerId: String, score: Int) {
+        _state.update { state ->
+            state.copy(
+                results = state.results.toMutableMap().also {
+                    it[playerId] = score
+                }
+            )
+        }
+    }
+
+    fun enterResults() {
+        _state.update {
+            it.copy(
+                phase = SessionPhase.RESULTS
+            )
+        }
+    }
+
     fun endGame() {
         _state.update {
             game = null
@@ -143,9 +184,28 @@ class SessionManager(
             it.copy(
                 phase = SessionPhase.LOBBY,
                 selectedGameId = null,
-                selectedConfig = null,
-                gameState = null
+                gameState = null,
+                results = emptyMap()
             )
+        }
+    }
+
+    fun playAgain() {
+        _state.update { currentState ->
+            currentState.selectedGameId?.let { gameId ->
+                currentState.selectedConfig?.let { config ->
+
+                    registry.get(gameId)?.let { newGame ->
+                        game = newGame as Game<GameState, GameAction, GameConfig>
+
+                        currentState.copy(
+                            phase = SessionPhase.PLAYING,
+                            gameState = newGame.initialState(currentState.players, config),
+                            results = emptyMap()
+                        )
+                    }
+                }
+            } ?: currentState
         }
     }
 }

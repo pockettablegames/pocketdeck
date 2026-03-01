@@ -27,9 +27,6 @@ class AppController {
             sessionId = "local-session",
             registry = registry
         )
-
-        // Temporary bootstrap for MVP
-        bootstrap()
     }
 
     val sessionState: StateFlow<SessionState> = sessionManager.state
@@ -44,6 +41,10 @@ class AppController {
 
     fun addPlayer(name: String) {
         sessionManager.addPlayer(name)
+    }
+
+    fun removePlayer(id: String) {
+        sessionManager.removePlayer(id)
     }
 
     fun switchPlayer() {
@@ -62,68 +63,23 @@ class AppController {
         sessionManager.startGame()
     }
 
+    fun enterScore() {
+        sessionManager.enterScore()
+    }
+
+    fun updateScore(playerId: String, score: Int) {
+        sessionManager.updateScore(playerId, score)
+    }
+
+    fun enterResults() {
+        sessionManager.enterResults()
+    }
+
     fun endGame() {
         sessionManager.endGame()
     }
 
-    // ------------------------
-    // Temporary bootstrap
-    // ------------------------
-
-    private fun bootstrap() {
-
-        sessionManager.addPlayer("Alice")
-        sessionManager.addPlayer("Gabriel")
-        sessionManager.addPlayer("Vera")
-        sessionManager.addPlayer("Nuno")
-        sessionManager.addPlayer("Rita")
-        sessionManager.addPlayer("Ricardo")
-
-        sessionManager.enterSetup("cards")
-
-        sessionManager.selectConfig(
-            CardsConfig(
-                name = "Default",
-                deck = Suit.entries.flatMap { suit ->
-                    (2..10).map {
-                        Card(
-                            id = "${suit}_$it",
-                            rank = it.toString(),
-                            suit = suit
-                        )
-                    } + Card(
-                        id = "${suit}_A",
-                        rank = "A",
-                        suit = suit
-                    ) + Card(
-                        id = "${suit}_K",
-                        rank = "K",
-                        suit = suit
-                    ) + Card(
-                        id = "${suit}_Q",
-                        rank = "Q",
-                        suit = suit
-                    ) + Card(
-                        id = "${suit}_J",
-                        rank = "J",
-                        suit = suit
-                    )
-                }.shuffled(),
-                cardsPerPlayer = 3,
-                showDeckZone = true,
-                showDiscardZone = true,
-                showPlayerTrickZone = true,
-                stackCardsOnTable = false,
-                refillDeckWithDiscard = false,
-                groupByRank = false,
-                remainingCardsAfterDealGoesToDeck = true,
-                discardHidesCardsFace = false,
-                revealLastDeckCard = false,
-                autoDeal = true,
-                playersOrderClockwise = false
-            )
-        )
-
-        sessionManager.startGame()
+    fun playAgain() {
+        sessionManager.playAgain()
     }
 }

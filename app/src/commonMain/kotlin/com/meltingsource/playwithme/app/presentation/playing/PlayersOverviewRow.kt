@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
@@ -122,7 +123,12 @@ fun PlayersOverviewRow(
                         }
                     }
                     Spacer(Modifier.height(Theme.Spacing.small))
-                    Text(player.name)
+                    Text(
+                        player.name,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = Theme.AppTypography.labelSmall
+                    )
                     Spacer(Modifier.height(Theme.Spacing.small))
                     StackedCards(
                         List(player.handCount) { it },

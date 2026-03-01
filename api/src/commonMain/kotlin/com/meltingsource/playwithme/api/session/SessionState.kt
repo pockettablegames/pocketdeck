@@ -17,5 +17,7 @@ data class SessionState(
     val selectedGameId: String? = null,
     val selectedConfig: GameConfig? = null,
 
-    val gameState: GameState? = null
+    val gameState: GameState? = null,
+
+    val results: Map<String, Int> = emptyMap()
 )
