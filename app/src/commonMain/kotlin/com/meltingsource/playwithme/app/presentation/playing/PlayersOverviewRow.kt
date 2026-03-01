@@ -77,11 +77,11 @@ fun PlayersOverviewRow(
         for (index in 0..<othersCount) {
             val player = players[
                 (startIndex + if (config.playersOrderClockwise) {
-                index
-            } else {
-                -index
-            } + players.size
-                    ) % players.size
+                    index
+                } else {
+                    -index
+                } + players.size
+                        ) % players.size
             ]
 
             Box(

@@ -1,7 +1,6 @@
 package com.meltingsource.playwithme.app.presentation.playing
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.meltingsource.playwithme.games.cards.Card
 
 @Composable
 fun TricksView(
@@ -22,7 +20,7 @@ fun TricksView(
     modifier: Modifier = Modifier
 ) {
     val visibleCards = remember(count) {
-        if(count <= 4) {
+        if (count <= 4) {
             count
         } else {
             4
@@ -42,24 +40,24 @@ fun TricksView(
                     .zIndex(index.toFloat())
             )
 
-            if(index == (visibleCards - 1)) {
-                    Badge(
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .offset(
-                                x = (6 + index * 2).dp,
-                                y = (-6 - index * 2).dp
-                            )
-                            .zIndex(index + 1f)
-                            .size(24.dp)
-                            .pointerInput(Unit) { }
-                    ) {
-                        Text(count.toString())
-                    }
+            if (index == (visibleCards - 1)) {
+                Badge(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .offset(
+                            x = (6 + index * 2).dp,
+                            y = (-6 - index * 2).dp
+                        )
+                        .zIndex(index + 1f)
+                        .size(24.dp)
+                        .pointerInput(Unit) { }
+                ) {
+                    Text(count.toString())
+                }
             }
         }
 
-        if(count == 0) {
+        if (count == 0) {
             EmptyCard()
         }
     }

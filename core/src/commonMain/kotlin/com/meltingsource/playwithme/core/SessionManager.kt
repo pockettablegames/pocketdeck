@@ -122,7 +122,7 @@ class SessionManager(
 
             val index = players.indexOfFirst { it.id == current }
 
-            val next = if(index != -1) {
+            val next = if (index != -1) {
                 players[(index + 1) % players.size]
             } else {
                 null

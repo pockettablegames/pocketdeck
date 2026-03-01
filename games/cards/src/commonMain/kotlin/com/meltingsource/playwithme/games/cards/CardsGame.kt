@@ -104,7 +104,7 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
         state: CardsState
     ): CardsState {
         val table = state.players.flatMap { it.table }
-        if(table.isEmpty()) {
+        if (table.isEmpty()) {
             return state
         }
 
@@ -124,7 +124,7 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
         actor: Player
     ): CardsState {
         val table = state.players.flatMap { it.table }
-        if(table.isEmpty()) {
+        if (table.isEmpty()) {
             return state
         }
 

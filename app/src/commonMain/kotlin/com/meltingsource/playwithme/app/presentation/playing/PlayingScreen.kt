@@ -1,9 +1,17 @@
 package com.meltingsource.playwithme.app.presentation.playing
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -36,9 +44,9 @@ fun PlayingScreen(
         ) {
             BoxWithConstraints(
                 modifier = Modifier
-                .widthIn(max = 800.dp)
-                .heightIn(max = 600.dp)
-                .fillMaxSize()
+                    .widthIn(max = 800.dp)
+                    .heightIn(max = 600.dp)
+                    .fillMaxSize()
             ) {
                 val maxWith = this.maxWidth
                 val activePlayer = remember(uiState) {

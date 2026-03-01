@@ -1,7 +1,6 @@
 package com.meltingsource.playwithme.app.presentation
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -57,6 +56,7 @@ fun App() {
                         )
                     }
                 }
+
                 SessionPhase.RESULTS ->
                     Text("Results")
             }

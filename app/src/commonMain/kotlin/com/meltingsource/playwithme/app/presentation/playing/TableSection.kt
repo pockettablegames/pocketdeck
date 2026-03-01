@@ -9,12 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Badge
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -93,11 +89,13 @@ fun TableSection(
                     Box(
                         Modifier
                             .width(slot)
-                            .zIndex(if(index % 2 == 1) {
-                                index + othersCount.toFloat()
-                            } else {
-                                index.toFloat()
-                            }),
+                            .zIndex(
+                                if (index % 2 == 1) {
+                                    index + othersCount.toFloat()
+                                } else {
+                                    index.toFloat()
+                                }
+                            ),
                         contentAlignment = Alignment.Center
                     ) {
 
@@ -111,11 +109,13 @@ fun TableSection(
                                 Modifier
                                     .width(stackWidth)
                                     .height(Theme.Card.height)
-                                    .offset(0.dp, if(index % 2 == 1) {
-                                        Theme.Card.height * 0.6f
-                                    } else {
-                                        0.dp
-                                    }),
+                                    .offset(
+                                        0.dp, if (index % 2 == 1) {
+                                            Theme.Card.height * 0.6f
+                                        } else {
+                                            0.dp
+                                        }
+                                    ),
                                 expand = true,
                                 first = index == 0,
                                 last = index == (othersCount - 1)

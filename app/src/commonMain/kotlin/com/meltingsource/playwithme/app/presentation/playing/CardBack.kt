@@ -11,14 +11,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.meltingsource.playwithme.app.theme.Theme
-import com.meltingsource.playwithme.games.cards.Suit
 import org.jetbrains.compose.resources.painterResource
 import playwithme.app.generated.resources.Res
 import playwithme.app.generated.resources.back
-import playwithme.app.generated.resources.clubs
-import playwithme.app.generated.resources.diamonds
-import playwithme.app.generated.resources.hearts
-import playwithme.app.generated.resources.spades
 
 @Composable
 fun CardBack(

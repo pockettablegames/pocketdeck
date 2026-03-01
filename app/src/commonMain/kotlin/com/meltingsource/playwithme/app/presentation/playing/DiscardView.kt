@@ -1,7 +1,6 @@
 package com.meltingsource.playwithme.app.presentation.playing
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,7 +21,7 @@ fun DiscardView(
     modifier: Modifier = Modifier
 ) {
     val visibleCards = remember(cards) {
-        if(cards.size <= 4) {
+        if (cards.size <= 4) {
             cards
         } else {
             cards.subList(cards.size - 4, cards.lastIndex)
@@ -43,24 +42,24 @@ fun DiscardView(
                     .zIndex(index.toFloat())
             )
 
-            if(index == visibleCards.lastIndex) {
-                    Badge(
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                            .offset(
-                                x = (6 + index * 2).dp,
-                                y = (-6 - index * 2).dp
-                            )
-                            .zIndex(index + 1f)
-                            .size(24.dp)
-                            .pointerInput(Unit) { }
-                    ) {
-                        Text(cards.size.toString())
-                    }
+            if (index == visibleCards.lastIndex) {
+                Badge(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .offset(
+                            x = (6 + index * 2).dp,
+                            y = (-6 - index * 2).dp
+                        )
+                        .zIndex(index + 1f)
+                        .size(24.dp)
+                        .pointerInput(Unit) { }
+                ) {
+                    Text(cards.size.toString())
+                }
             }
         }
 
-        if(cards.isEmpty()) {
+        if (cards.isEmpty()) {
             EmptyCard()
         }
     }

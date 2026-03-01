@@ -104,7 +104,7 @@ fun AppTheme(
 }
 
 @Composable
-fun rememberAvatars() : List<DrawableResource> {
+fun rememberAvatars(): List<DrawableResource> {
     return remember {
         listOf(
             Res.drawable.avatar_0,
