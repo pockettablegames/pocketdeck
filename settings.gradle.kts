@@ -1,4 +1,4 @@
-rootProject.name = "PlayWithMe"
+rootProject.name = "PocketDeck"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

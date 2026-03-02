@@ -1,6 +1,6 @@
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
-import com.meltingsource.playwithme.app.presentation.App
+import io.github.pockettablegames.pocketdeck.app.presentation.App
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
