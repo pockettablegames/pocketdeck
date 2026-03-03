@@ -135,7 +135,8 @@ fun PlayersOverviewRow(
                         Modifier
                             .width(stackWidth)
                             .height(Theme.Card.height * 0.7f),
-                        cardWidth = Theme.Card.width * 0.7f
+                        cardWidth = Theme.Card.width * 0.7f,
+                        maxCards = 4
                     ) {
                         CardBack(
                             Modifier.size(

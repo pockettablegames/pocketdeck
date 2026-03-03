@@ -35,6 +35,7 @@ fun CardsConfigScreen(
     var autoDeal by remember { mutableStateOf(defaultConfig.autoDeal) }
     var showDeck by remember { mutableStateOf(defaultConfig.showDeckZone) }
     var showDiscard by remember { mutableStateOf(defaultConfig.showDiscardZone) }
+    var groupByRank by remember { mutableStateOf(defaultConfig.groupByRank) }
 
     Column(
         modifier = Modifier
@@ -98,6 +99,18 @@ fun CardsConfigScreen(
 
         Spacer(Modifier.weight(1f))
 
+        // Group By
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("Group By Rank")
+            Spacer(Modifier.weight(1f))
+            Switch(
+                checked = groupByRank,
+                onCheckedChange = { groupByRank = it }
+            )
+        }
+
+        Spacer(Modifier.weight(1f))
+
         Button(
             onClick = {
                 onStart(
@@ -106,7 +119,8 @@ fun CardsConfigScreen(
                         clockwise = clockwise,
                         autoDeal = autoDeal,
                         showDeck = showDeck,
-                        showDiscard = showDiscard
+                        showDiscard = showDiscard,
+                        groupByRank = groupByRank
                     )
                 )
             },
@@ -123,7 +137,8 @@ fun defaultCardsConfig(
     clockwise: Boolean,
     autoDeal: Boolean,
     showDeck: Boolean,
-    showDiscard: Boolean
+    showDiscard: Boolean,
+    groupByRank: Boolean
 ): CardsConfig {
     return CardsConfig(
         name = "Default",
@@ -132,24 +147,34 @@ fun defaultCardsConfig(
                 Card(
                     id = "${suit}_$it",
                     rank = it.toString(),
-                    suit = suit
+                    suit = suit,
+                    rankOrder = it,
+                    suitOrder = suit.ordinal
                 )
             } + Card(
                 id = "${suit}_A",
                 rank = "A",
-                suit = suit
+                suit = suit,
+                rankOrder = 14,
+                suitOrder = suit.ordinal
             ) + Card(
                 id = "${suit}_K",
                 rank = "K",
-                suit = suit
+                suit = suit,
+                rankOrder = 13,
+                suitOrder = suit.ordinal
             ) + Card(
                 id = "${suit}_Q",
                 rank = "Q",
-                suit = suit
+                suit = suit,
+                rankOrder = 12,
+                suitOrder = suit.ordinal
             ) + Card(
                 id = "${suit}_J",
                 rank = "J",
-                suit = suit
+                suit = suit,
+                rankOrder = 11,
+                suitOrder = suit.ordinal
             )
         }.shuffled(),
         cardsPerPlayer = cardsPerPlayer,
@@ -157,7 +182,7 @@ fun defaultCardsConfig(
         showDiscardZone = showDiscard,
         showPlayerTrickZone = true,
         refillDeckWithDiscard = false,
-        groupByRank = false,
+        groupByRank = groupByRank,
         discardHidesCardsFace = false,
         revealLastDeckCard = false,
         autoDeal = autoDeal,

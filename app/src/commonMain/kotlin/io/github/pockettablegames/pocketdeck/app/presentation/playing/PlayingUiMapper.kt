@@ -2,6 +2,8 @@ package io.github.pockettablegames.pocketdeck.app.presentation.playing
 
 import io.github.pockettablegames.pocketdeck.api.session.SessionPhase
 import io.github.pockettablegames.pocketdeck.api.session.SessionState
+import io.github.pockettablegames.pocketdeck.games.cards.Card
+import io.github.pockettablegames.pocketdeck.games.cards.CardsConfig
 import io.github.pockettablegames.pocketdeck.games.cards.CardsState
 
 object PlayingUiMapper {
@@ -31,7 +33,19 @@ object PlayingUiMapper {
         return PlayingUiState(
             activePlayerId = activeId,
             players = playerSummaries,
-            hand = activePlayer.hand,
+            hand = if((session.selectedConfig as? CardsConfig)?.groupByRank == true) {
+                activePlayer.hand.sortedWith(
+                    compareByDescending<Card> {
+                        it.rankOrder
+                    }.thenBy { it.suitOrder }
+                )
+            } else {
+                activePlayer.hand.sortedWith(
+                    compareBy<Card> {
+                        it.suitOrder
+                    }.thenByDescending { it.rankOrder }
+                )
+            },
             table = cardsState.players.associate { it.playerId to it.table },
             deckCount = cardsState.deck.size,
             discard = cardsState.discard,

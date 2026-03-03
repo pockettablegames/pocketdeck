@@ -41,7 +41,7 @@ fun LobbyScreen(
     ) {
 
         Text(
-            "Lobby",
+            "Pocket Deck",
             style = MaterialTheme.typography.headlineMedium
         )
 
