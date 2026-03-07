@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import io.github.pockettablegames.pocketdeck.api.session.SessionPhase
 import io.github.pockettablegames.pocketdeck.app.presentation.lobby.LobbyScreen
+import io.github.pockettablegames.pocketdeck.app.presentation.playing.PlayerSwitchScreen
 import io.github.pockettablegames.pocketdeck.app.presentation.playing.PlayingScreen
 import io.github.pockettablegames.pocketdeck.app.presentation.playing.PlayingUiMapper
 import io.github.pockettablegames.pocketdeck.app.presentation.results.ResultScreen
@@ -62,10 +63,27 @@ fun App() {
                             config = sessionState.selectedConfig as CardsConfig,
                             onAction = { controller.apply(it) },
                             onSwitchPlayer = {
-                                controller.switchPlayer()
+                                controller.enterSwitchPlayer()
                             },
                             onEnterScore = {
                                 controller.enterScore()
+                            }
+                        )
+                    }
+                }
+
+                SessionPhase.SWITCH_PLAYER -> {
+
+                    if (playingUiState != null) {
+                        PlayerSwitchScreen(
+                            playingUiState.players,
+                            playingUiState.activePlayerId,
+                            onSelectPlayer = {
+                                controller.switchToPlayer(it)
+                                controller.returnToGame()
+                            },
+                            onCancel = {
+                                controller.returnToGame()
                             }
                         )
                     }

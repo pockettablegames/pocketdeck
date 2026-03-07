@@ -18,12 +18,14 @@ interface Game<
 
     fun initialState(
         players: List<Player>,
-        config: C
+        config: C,
+        lastState: S?
     ): S
 
     fun apply(
         state: S,
         action: A,
-        actor: Player
+        actor: Player,
+        config: C
     ): S
 }

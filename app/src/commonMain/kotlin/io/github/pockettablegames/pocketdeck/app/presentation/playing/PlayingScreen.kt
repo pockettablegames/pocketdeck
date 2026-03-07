@@ -31,8 +31,12 @@ fun PlayingScreen(
     Scaffold(
         topBar = {
             GameTopBar(
+                showDeal = uiState.isDealer,
                 onUndo = { onAction(CardsAction.Undo) },
                 onSwitch = onSwitchPlayer,
+                onDeal = {
+                    onAction(CardsAction.Deal)
+                },
                 onEndGame = onEnterScore
             )
         }
@@ -77,7 +81,7 @@ fun PlayingScreen(
                             discard = uiState.discard,
                             modifier = Modifier.fillMaxWidth(),
                             maxWidth = maxWith,
-                            deckCount = uiState.deckCount,
+                            deck = uiState.deck,
                             config = config,
                             onDraw = { onAction(CardsAction.Draw) },
                             onCollectDiscard = {
@@ -89,6 +93,7 @@ fun PlayingScreen(
                     activePlayer?.let {
                         item {
                             PersonalSection(
+                                config = config,
                                 player = it,
                                 hand = uiState.hand,
                                 tricks = uiState.tricks,

@@ -20,4 +20,8 @@ sealed class CardsAction : GameAction {
 
     @Serializable
     object Undo : CardsAction()
+
+    @Serializable
+    object Deal : CardsAction()
+
 }

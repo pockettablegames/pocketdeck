@@ -73,8 +73,7 @@ class SessionManager(
         _state.update {
             it.copy(
                 phase = SessionPhase.SETUP,
-                selectedGameId = gameId,
-                selectedConfig = null
+                selectedGameId = gameId
             )
         }
     }
@@ -101,7 +100,7 @@ class SessionManager(
 
                         currentState.copy(
                             phase = SessionPhase.PLAYING,
-                            gameState = newGame.initialState(currentState.players, config)
+                            gameState = newGame.initialState(currentState.players, config, null)
                         )
                     }
                 }
@@ -118,15 +117,33 @@ class SessionManager(
             currentState.activePlayerId?.let { actorId ->
                 currentState.players.firstOrNull { it.id == actorId }?.let { actor ->
 
-                    currentState.gameState?.let { gameState ->
-                        game?.apply(gameState, action, actor)?.let { newGameState ->
-                            currentState.copy(
-                                gameState = newGameState
-                            )
+                    currentState.selectedConfig?.let { config ->
+                        currentState.gameState?.let { gameState ->
+                            game?.apply(gameState, action, actor, config)?.let { newGameState ->
+                                currentState.copy(
+                                    gameState = newGameState
+                                )
+                            }
                         }
                     }
                 }
             } ?: currentState
+        }
+    }
+
+    fun enterSwitchPlayer() {
+        _state.update {
+            it.copy(
+                phase = SessionPhase.SWITCH_PLAYER
+            )
+        }
+    }
+
+    fun returnToGame() {
+        _state.update {
+            it.copy(
+                phase = SessionPhase.PLAYING
+            )
         }
     }
 
@@ -148,6 +165,24 @@ class SessionManager(
                     activePlayerId = next.id
                 )
             } ?: currentState
+        }
+    }
+
+    fun switchToPlayer(playerId: String) {
+        _state.update { currentState ->
+            val players = currentState.players
+
+            if (playerId != currentState.activePlayerId) {
+                val next = players.firstOrNull { it.id == playerId }
+
+                next?.let {
+                    currentState.copy(
+                        activePlayerId = next.id
+                    )
+                } ?: currentState
+            } else {
+                currentState
+            }
         }
     }
 
@@ -200,7 +235,7 @@ class SessionManager(
 
                         currentState.copy(
                             phase = SessionPhase.PLAYING,
-                            gameState = newGame.initialState(currentState.players, config),
+                            gameState = newGame.initialState(currentState.players, config, currentState.gameState),
                             results = emptyMap()
                         )
                     }

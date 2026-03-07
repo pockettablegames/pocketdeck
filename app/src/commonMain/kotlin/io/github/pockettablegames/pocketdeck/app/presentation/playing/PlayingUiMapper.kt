@@ -10,7 +10,9 @@ object PlayingUiMapper {
 
     fun map(session: SessionState): PlayingUiState? {
 
-        if (session.phase != SessionPhase.PLAYING) return null
+        if (session.phase != SessionPhase.PLAYING
+            && session.phase != SessionPhase.SWITCH_PLAYER
+        ) return null
 
         val cardsState = session.gameState as? CardsState ?: return null
 
@@ -32,6 +34,7 @@ object PlayingUiMapper {
 
         return PlayingUiState(
             activePlayerId = activeId,
+            isDealer = activeId == cardsState.dealer,
             players = playerSummaries,
             hand = if((session.selectedConfig as? CardsConfig)?.groupByRank == true) {
                 activePlayer.hand.sortedWith(
@@ -47,7 +50,7 @@ object PlayingUiMapper {
                 )
             },
             table = cardsState.players.associate { it.playerId to it.table },
-            deckCount = cardsState.deck.size,
+            deck = cardsState.deck,
             discard = cardsState.discard,
             tricks = activePlayer.tricks
         )

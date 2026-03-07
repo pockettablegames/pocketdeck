@@ -47,8 +47,20 @@ class AppController {
         sessionManager.removePlayer(id)
     }
 
+    fun enterSwitchPlayer() {
+        sessionManager.enterSwitchPlayer()
+    }
+
+    fun returnToGame() {
+        sessionManager.returnToGame()
+    }
+
     fun switchPlayer() {
         sessionManager.switchToNextPlayer()
+    }
+
+    fun switchToPlayer(playerId: String) {
+        sessionManager.switchToPlayer(playerId)
     }
 
     fun enterSetup(gameId: String) {

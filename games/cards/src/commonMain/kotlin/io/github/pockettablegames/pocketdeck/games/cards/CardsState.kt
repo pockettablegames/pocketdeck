@@ -8,6 +8,7 @@ data class CardsState(
     val players: List<PlayerCards>,
     val deck: List<Card>,
     val discard: List<Card>,
+    val dealer: String,
     val history: List<CardsState> = emptyList()
 ) : GameState
 

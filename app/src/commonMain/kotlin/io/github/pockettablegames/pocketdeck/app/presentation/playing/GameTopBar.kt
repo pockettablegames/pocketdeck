@@ -17,13 +17,21 @@ import androidx.compose.runtime.setValue
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameTopBar(
+    showDeal: Boolean,
     onUndo: () -> Unit,
     onSwitch: () -> Unit,
+    onDeal: () -> Unit,
     onEndGame: () -> Unit
 ) {
     TopAppBar(
         title = { Text("Cards") },
         actions = {
+            if(showDeal) {
+                TextButton(onClick = onDeal) {
+                    Text("Deal")
+                }
+            }
+
             TextButton(onClick = onUndo) {
                 Text("Undo")
             }

@@ -33,7 +33,7 @@ fun TableSection(
     discard: List<Card>,
     modifier: Modifier = Modifier,
     maxWidth: Dp,
-    deckCount: Int,
+    deck: List<Card>,
     config: CardsConfig,
     onDraw: () -> Unit,
     onCollectDiscard: () -> Unit
@@ -142,7 +142,8 @@ fun TableSection(
             ) {
 
                 DeckView(
-                    deckCount,
+                    config.showDeckZone,
+                    deck,
                     Modifier
                         .clickable(
                             onClick = onDraw
@@ -172,6 +173,7 @@ fun TableSection(
                 }
 
                 DiscardView(
+                    config.showDiscardZone,
                     discard,
                     Modifier
                         .clickable(

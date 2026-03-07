@@ -27,10 +27,12 @@ import androidx.compose.ui.unit.dp
 import io.github.pockettablegames.pocketdeck.app.theme.Theme
 import io.github.pockettablegames.pocketdeck.app.theme.rememberAvatars
 import io.github.pockettablegames.pocketdeck.games.cards.Card
+import io.github.pockettablegames.pocketdeck.games.cards.CardsConfig
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun PersonalSection(
+    config: CardsConfig,
     player: PlayerSummaryUi,
     hand: List<Card>,
     tricks: List<List<Card>>,
@@ -67,13 +69,17 @@ fun PersonalSection(
                 Text(player.name)
             }
 
-            TricksView(
-                tricks.size,
-                Modifier
-                    .clickable(
-                        onClick = onCollectTrick
-                    )
-            )
+            if(config.showPlayerTrickZone) {
+                TricksView(
+                    tricks.size,
+                    Modifier
+                        .clickable(
+                            onClick = onCollectTrick
+                        )
+                )
+            } else {
+                Box(Modifier)
+            }
         }
 
         Spacer(Modifier.height(Theme.Spacing.small))
