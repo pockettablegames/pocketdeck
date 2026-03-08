@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import io.github.pockettablegames.pocketdeck.app.theme.Theme
 
 @Composable
 fun TricksView(
@@ -50,7 +51,8 @@ fun TricksView(
                         )
                         .zIndex(index + 1f)
                         .size(24.dp)
-                        .pointerInput(Unit) { }
+                        .pointerInput(Unit) { },
+                    contentColor = Theme.LightColorScheme.outline
                 ) {
                     Text(count.toString())
                 }

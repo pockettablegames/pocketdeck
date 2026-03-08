@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.pockettablegames.pocketdeck.api.game.GameAction
 import io.github.pockettablegames.pocketdeck.app.theme.Theme
+import io.github.pockettablegames.pocketdeck.games.cards.ActionType
 import io.github.pockettablegames.pocketdeck.games.cards.CardsAction
 import io.github.pockettablegames.pocketdeck.games.cards.CardsConfig
 
@@ -28,10 +29,18 @@ fun PlayingScreen(
     onSwitchPlayer: () -> Unit,
     onEnterScore: () -> Unit
 ) {
+    val lastCollectedAction = remember(uiState.actions) {
+        uiState.actions.lastOrNull {
+            it.type == ActionType.CollectToTrick ||
+                    it.type == ActionType.CollectToDiscard
+        } ?: uiState.actions.firstOrNull()
+    }
+
     Scaffold(
         topBar = {
             GameTopBar(
                 showDeal = uiState.isDealer,
+                undoEnabled = uiState.undoEnabled,
                 onUndo = { onAction(CardsAction.Undo) },
                 onSwitch = onSwitchPlayer,
                 onDeal = {
@@ -68,6 +77,7 @@ fun PlayingScreen(
                         PlayersOverviewRow(
                             players = uiState.players,
                             activePlayer = activePlayer,
+                            lastCollectedAction = lastCollectedAction,
                             maxWidth = maxWith,
                             config = config
                         )
@@ -97,6 +107,7 @@ fun PlayingScreen(
                                 player = it,
                                 hand = uiState.hand,
                                 tricks = uiState.tricks,
+                                lastCollectedAction = lastCollectedAction,
                                 onPlay = { cardId ->
                                     onAction(CardsAction.Play(cardId))
                                 },

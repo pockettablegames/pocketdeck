@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.pockettablegames.pocketdeck.app.theme.Theme
 import io.github.pockettablegames.pocketdeck.games.cards.Card
@@ -28,13 +29,15 @@ import pocketdeck.app.generated.resources.spades
 @Composable
 fun PlayingCard(
     card: Card,
+    requiredWidth: Dp = Theme.Card.width,
+    requiredHeight: Dp = Theme.Card.height,
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null
 ) {
     Surface(
         modifier = modifier
-            .requiredWidth(Theme.Card.width)
-            .requiredHeight(Theme.Card.height)
+            .requiredWidth(requiredWidth)
+            .requiredHeight(requiredHeight)
             .then(
                 if (onClick != null)
                     Modifier.clickable { onClick() }

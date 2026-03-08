@@ -62,8 +62,12 @@ object Theme {
         surfaceVariant = Color(0xFFF1F3F6),
         onSurfaceVariant = Color(0xFF4F5B62),
 
-        outline = Color(0xFFE0E3E7)
+        outline = Color(0xFFE0E3E7),
     )
+
+    object Colors {
+        val glow = Color(0xFFfde99b)
+    }
 
     val AppShapes = Shapes(
         extraSmall = RoundedCornerShape(6.dp),

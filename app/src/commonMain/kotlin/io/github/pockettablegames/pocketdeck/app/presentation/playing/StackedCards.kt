@@ -36,7 +36,7 @@ fun <T> StackedCards(
         modifier = modifier
     ) {
         val cards = remember(items) {
-            if(maxCards < items.size) {
+            if (maxCards < items.size) {
                 items.subList(0, maxCards)
             } else {
                 items
@@ -82,7 +82,7 @@ fun <T> StackedCards(
                 }
             }
 
-            if(cards.size < items.size) {
+            if (cards.size < items.size) {
                 Badge(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -92,7 +92,8 @@ fun <T> StackedCards(
                         )
                         .zIndex(cards.size.toFloat())
                         .size(24.dp)
-                        .pointerInput(Unit) { }
+                        .pointerInput(Unit) { },
+                    contentColor = Theme.LightColorScheme.outline
                 ) {
                     Text(items.size.toString())
                 }

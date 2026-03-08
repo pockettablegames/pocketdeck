@@ -43,7 +43,7 @@ fun DiscardView(
                             .padding(
                                 start = (index * 2).dp
                             )
-                            .offset(0.dp,(-index * 2).dp)
+                            .offset(0.dp, (-index * 2).dp)
                             .zIndex(index.toFloat())
                     )
                 } else {
@@ -52,7 +52,7 @@ fun DiscardView(
                             .padding(
                                 start = (index * 2).dp
                             )
-                            .offset(0.dp,(-index * 2).dp)
+                            .offset(0.dp, (-index * 2).dp)
                             .zIndex(index.toFloat())
                     )
                 }
@@ -67,7 +67,8 @@ fun DiscardView(
                             )
                             .zIndex(index + 1f)
                             .size(24.dp)
-                            .pointerInput(Unit) { }
+                            .pointerInput(Unit) { },
+                        contentColor = Theme.LightColorScheme.outline
                     ) {
                         Text(cards.size.toString())
                     }

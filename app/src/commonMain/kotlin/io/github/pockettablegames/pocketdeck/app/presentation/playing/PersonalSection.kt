@@ -1,6 +1,7 @@
 package io.github.pockettablegames.pocketdeck.app.presentation.playing
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,13 +20,17 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
+import io.github.pockettablegames.pocketdeck.app.presentation.playerswitch.ActionUi
 import io.github.pockettablegames.pocketdeck.app.theme.Theme
 import io.github.pockettablegames.pocketdeck.app.theme.rememberAvatars
+import io.github.pockettablegames.pocketdeck.games.cards.ActionType
 import io.github.pockettablegames.pocketdeck.games.cards.Card
 import io.github.pockettablegames.pocketdeck.games.cards.CardsConfig
 import org.jetbrains.compose.resources.painterResource
@@ -36,11 +41,16 @@ fun PersonalSection(
     player: PlayerSummaryUi,
     hand: List<Card>,
     tricks: List<List<Card>>,
+    lastCollectedAction: ActionUi?,
     onPlay: (String) -> Unit,
     onCollectTrick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val avatars = rememberAvatars()
+
+    val showDialog = remember {
+        mutableStateOf(false)
+    }
 
     Column(
         modifier = modifier
@@ -55,7 +65,29 @@ fun PersonalSection(
                     Box(
                         modifier = Modifier
                             .clip(CircleShape)
-                            .shadow(2.dp),
+                            .shadow(2.dp)
+                            .then(
+                                if (lastCollectedAction?.playerId == player.id) {
+                                    Modifier.border(
+                                        width = 4.dp,
+                                        color = Theme.Colors.glow,
+                                        shape = CircleShape
+                                    ).then(
+                                        if ((lastCollectedAction.type == ActionType.CollectToTrick ||
+                                                    lastCollectedAction.type == ActionType.CollectToDiscard)
+                                        ) {
+                                            Modifier.clickable(
+                                                onClick = { showDialog.value = true }
+
+                                            )
+                                        } else {
+                                            Modifier
+                                        }
+                                    )
+                                } else {
+                                    Modifier
+                                }
+                            ),
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
@@ -69,7 +101,7 @@ fun PersonalSection(
                 Text(player.name)
             }
 
-            if(config.showPlayerTrickZone) {
+            if (config.showPlayerTrickZone) {
                 TricksView(
                     tricks.size,
                     Modifier
@@ -117,5 +149,9 @@ fun PersonalSection(
                 }
             }
         }
+    }
+
+    lastCollectedAction?.let {
+        ActionDialog(lastCollectedAction, showDialog)
     }
 }

@@ -9,7 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import io.github.pockettablegames.pocketdeck.api.session.SessionPhase
 import io.github.pockettablegames.pocketdeck.app.presentation.lobby.LobbyScreen
-import io.github.pockettablegames.pocketdeck.app.presentation.playing.PlayerSwitchScreen
+import io.github.pockettablegames.pocketdeck.app.presentation.playerswitch.PlayerSwitchScreen
 import io.github.pockettablegames.pocketdeck.app.presentation.playing.PlayingScreen
 import io.github.pockettablegames.pocketdeck.app.presentation.playing.PlayingUiMapper
 import io.github.pockettablegames.pocketdeck.app.presentation.results.ResultScreen
@@ -47,7 +47,8 @@ fun App() {
 
                 SessionPhase.SETUP ->
                     CardsConfigScreen(
-                        defaultConfig = sessionState.selectedConfig as? CardsConfig ?: CardsConfig(),
+                        defaultConfig = sessionState.selectedConfig as? CardsConfig
+                            ?: CardsConfig(),
                         playersCount = sessionState.players.size,
                         onStart = {
                             controller.selectConfig(it)
@@ -98,7 +99,7 @@ fun App() {
                     val activePlayerId = remember(sessionState) {
                         sessionState.activePlayerId
                     }
-                    val activePlayer = remember(sessionState){
+                    val activePlayer = remember(sessionState) {
                         sessionState.players.firstOrNull { it.id == activePlayerId }
                             ?: sessionState.players.first()
                     }

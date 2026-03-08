@@ -1,6 +1,8 @@
 package io.github.pockettablegames.pocketdeck.app.presentation.playing
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Badge
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,8 +29,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
+import io.github.pockettablegames.pocketdeck.app.presentation.playerswitch.ActionUi
 import io.github.pockettablegames.pocketdeck.app.theme.Theme
 import io.github.pockettablegames.pocketdeck.app.theme.rememberAvatars
+import io.github.pockettablegames.pocketdeck.games.cards.ActionType
 import io.github.pockettablegames.pocketdeck.games.cards.CardsConfig
 import org.jetbrains.compose.resources.painterResource
 import kotlin.uuid.ExperimentalUuidApi
@@ -38,7 +43,8 @@ fun PlayersOverviewRow(
     players: List<PlayerSummaryUi>,
     activePlayer: PlayerSummaryUi?,
     maxWidth: Dp,
-    config: CardsConfig
+    config: CardsConfig,
+    lastCollectedAction: ActionUi?
 ) {
     val avatars = rememberAvatars()
 
@@ -52,6 +58,10 @@ fun PlayersOverviewRow(
 
     val stackWidth = remember(slot) {
         min(slot, maxWidth * 0.5f)
+    }
+
+    val showDialog = remember {
+        mutableStateOf(false)
     }
 
     Row(
@@ -98,7 +108,29 @@ fun PlayersOverviewRow(
                         Box(
                             modifier = Modifier
                                 .clip(CircleShape)
-                                .shadow(2.dp),
+                                .shadow(2.dp)
+                                .then(
+                                    if (lastCollectedAction?.playerId == player.id) {
+                                        Modifier.border(
+                                            width = 4.dp,
+                                            color = Theme.Colors.glow,
+                                            shape = CircleShape
+                                        ).then(
+                                            if ((lastCollectedAction.type == ActionType.CollectToTrick ||
+                                                        lastCollectedAction.type == ActionType.CollectToDiscard)
+                                            ) {
+                                                Modifier.clickable(
+                                                    onClick = { showDialog.value = true }
+
+                                                )
+                                            } else {
+                                                Modifier
+                                            }
+                                        )
+                                    } else {
+                                        Modifier
+                                    }
+                                ),
                             contentAlignment = Alignment.Center
                         ) {
                             Image(
@@ -116,7 +148,8 @@ fun PlayersOverviewRow(
                                         y = (-6).dp
                                     )
                                     .size(24.dp)
-                                    .pointerInput(Unit) { }
+                                    .pointerInput(Unit) { },
+                                contentColor = Theme.LightColorScheme.outline
                             ) {
                                 Text(player.trickCount.toString())
                             }
@@ -149,4 +182,9 @@ fun PlayersOverviewRow(
             }
         }
     }
+
+    lastCollectedAction?.let {
+        ActionDialog(lastCollectedAction, showDialog)
+    }
 }
+

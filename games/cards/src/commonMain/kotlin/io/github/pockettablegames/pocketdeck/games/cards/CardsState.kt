@@ -9,6 +9,7 @@ data class CardsState(
     val deck: List<Card>,
     val discard: List<Card>,
     val dealer: String,
+    val action: PlayerAction?,
     val history: List<CardsState> = emptyList()
 ) : GameState
 
@@ -19,3 +20,18 @@ data class PlayerCards(
     val tricks: List<List<Card>>,
     val table: List<Card>
 )
+
+@Serializable
+data class PlayerAction(
+    val playerId: String,
+    val actionType: ActionType,
+    val cards: List<Card>
+)
+
+enum class ActionType {
+    Play,
+    Draw,
+    Deal,
+    CollectToDiscard,
+    CollectToTrick
+}

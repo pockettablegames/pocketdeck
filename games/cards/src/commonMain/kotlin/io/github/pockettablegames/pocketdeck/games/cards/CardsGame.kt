@@ -3,7 +3,6 @@ package io.github.pockettablegames.pocketdeck.games.cards
 import io.github.pockettablegames.pocketdeck.api.Player
 import io.github.pockettablegames.pocketdeck.api.game.Game
 import kotlinx.serialization.KSerializer
-import kotlin.collections.mutableListOf
 
 class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
     override val id: String = "cards"
@@ -20,8 +19,8 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
     ): CardsState {
         val deck = config.deck.shuffled().toMutableList()
 
-        val playerCards = if(config.autoDeal) {
-            if(config.distributeAllDeckCards) {
+        val playerCards = if (config.autoDeal) {
+            if (config.distributeAllDeckCards) {
                 val hands = List(players.size) {
                     mutableListOf<Card>()
                 }
@@ -66,13 +65,14 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
             players = playerCards,
             deck = deck,
             discard = emptyList(),
-            dealer = if(lastState != null) {
+            dealer = if (lastState != null) {
                 players[
                     (players.indexOfFirst { it.id == lastState.dealer } + 1) % players.size
                 ].id
             } else {
                 players.first().id
-            }
+            },
+            action = null
         )
     }
 
@@ -85,10 +85,10 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
         return when (action) {
             is CardsAction.Play -> play(state, action.cardId, actor)
             is CardsAction.Draw -> draw(config, state, actor)
-            is CardsAction.CollectToDiscard -> collectToDiscard(state)
+            is CardsAction.CollectToDiscard -> collectToDiscard(state, actor)
             is CardsAction.CollectToTrick -> collectToTrick(state, actor)
             is CardsAction.Undo -> state.history.lastOrNull() ?: state
-            is CardsAction.Deal -> deal(state, config)
+            is CardsAction.Deal -> deal(state, actor, config)
         }
     }
 
@@ -110,7 +110,8 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
         }
 
         val newState = state.copy(
-            players = updatedPlayers
+            players = updatedPlayers,
+            action = PlayerAction(actor.id, ActionType.Play, listOf(card))
         )
 
         return withHistory(state, newState)
@@ -137,7 +138,7 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
 
         var deck = state.deck.drop(1)
         var discard = state.discard
-        if(deck.isEmpty() && config.refillDeckWithDiscard) {
+        if (deck.isEmpty() && config.refillDeckWithDiscard) {
             val lastDiscard = discard.last()
             deck = discard.dropLast(1).shuffled()
             discard = listOf(lastDiscard)
@@ -146,14 +147,16 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
         val newState = state.copy(
             players = updatedPlayers,
             deck = deck,
-            discard = discard
+            discard = discard,
+            action = PlayerAction(actor.id, ActionType.Draw, listOf(card))
         )
 
         return withHistory(state, newState)
     }
 
     private fun collectToDiscard(
-        state: CardsState
+        state: CardsState,
+        actor: Player
     ): CardsState {
         val table = state.players.flatMap { it.table }
         if (table.isEmpty()) {
@@ -165,7 +168,8 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
         }
         val newState = state.copy(
             players = updatedPlayers,
-            discard = state.discard + table
+            discard = state.discard + table,
+            action = PlayerAction(actor.id, ActionType.CollectToDiscard, table)
         )
 
         return withHistory(state, newState)
@@ -194,7 +198,8 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
         }
 
         val newState = state.copy(
-            players = updatedPlayers
+            players = updatedPlayers,
+            action = PlayerAction(actor.id, ActionType.CollectToTrick, table)
         )
 
         return withHistory(state, newState)
@@ -202,11 +207,12 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
 
     private fun deal(
         state: CardsState,
+        actor: Player,
         config: CardsConfig
-    ) : CardsState {
+    ): CardsState {
         val deck = state.deck.toMutableList()
 
-        val playerCards = if(config.distributeAllDeckCards) {
+        val playerCards = if (config.distributeAllDeckCards) {
             val hands = state.players.map {
                 it.hand.toMutableList()
             }
@@ -231,7 +237,8 @@ class CardsGame : Game<CardsState, CardsAction, CardsConfig> {
 
         val newState = state.copy(
             players = playerCards,
-            deck = deck
+            deck = deck,
+            action = PlayerAction(actor.id, ActionType.Deal, emptyList())
         )
 
         return withHistory(state, newState)
